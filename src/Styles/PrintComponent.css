@@ -1,0 +1,17 @@
+@media all {
+  .pagebreak {
+    display: none;
+  }
+}
+
+@media print {
+  .pagebreak {
+    page-break-before: always;
+  }
+}
+.rotated {
+  transform: rotate(90deg);
+  -webkit-transform: rotate(-90deg);
+  display: inline-block;
+  padding: 20px;
+}
