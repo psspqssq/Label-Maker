@@ -7,9 +7,10 @@ export const PrintComponent = React.forwardRef((props, ref) => {
     overflow: "hidden",
     "font-size": props.flavor.fontSize,
   };
+  function getMarkup() {
+    return { __html: props.flavor.rawtext };
+  }
   return (
-    <div ref={ref} style={style}>
-      {props.flavor.text()}
-    </div>
+    <div ref={ref} style={style} dangerouslySetInnerHTML={getMarkup()}></div>
   );
 });

@@ -5,48 +5,63 @@ import "../App.css";
 
 const App = () => {
   const mockupLabel = {
-    text: () => {
-      return "";
-    },
     rawtext: "",
     dimensions: {
-      width: 0,
-      height: 0,
+      width: 400,
+      height: 50.8,
     },
-    fontSize: 96,
+    fontSize: 84,
     rotate: false,
   };
   const [flavor, setFlavor] = useState(mockupLabel);
   const componentRef = useRef();
   function handleFlavor(event) {
-    console.log(event.target.value);
-    setFlavor({ ...flavor, rawtext: event.target.value }); /*
-    const Markup = () => {
-      <div>
-        {flavor.rawtext.split("").map((letter) => {
-          return <span>{letter}</span>;
-        })}
-      </div>;
-    };
+    var markup = "";
+    {
+      event.target.value.split("").map((letter) => {
+        markup += "<span>" + letter + "</span>";
+      });
+    }
     setFlavor({
       ...flavor,
-      text: Markup,
-    });*/
+      rawtext: markup,
+      dimensions: {
+        height: flavor.dimensions.height,
+        width: event.target.value.length * 12,
+      },
+    });
   }
-  function handleIncreaseSize() {
+  function handleIncreaseFontSize() {
     setFlavor({
       ...flavor,
       fontSize: flavor.fontSize + 6,
     });
   }
-  function handleDecreaseSize() {
+  function handleDecreaseFontSize() {
     setFlavor({
       ...flavor,
       fontSize: flavor.fontSize - 6,
     });
   }
+  function handleIncreasePageSize() {
+    setFlavor({
+      ...flavor,
+      dimensions: {
+        width: flavor.dimensions.width + 50,
+        height: flavor.dimensions.height,
+      },
+    });
+  }
+  function handleDecreasePageSize() {
+    setFlavor({
+      ...flavor,
+      dimensions: {
+        width: flavor.dimensions.width - 50,
+        height: flavor.dimensions.height,
+      },
+    });
+  }
   function handleRotate() {
-    console.log(flavor);
     if (flavor.rotate == 0) {
       setFlavor({
         ...flavor,
@@ -66,15 +81,21 @@ const App = () => {
     <div className="App">
       <h1>Label Maker for GH Processing</h1>
       <h3>Font Size: {flavor.fontSize}</h3>
+      <h3>
+        Page Size:{" "}
+        {`width: ${flavor.dimensions.width}, height: ${flavor.dimensions.height}`}
+      </h3>
       <input onChange={handleFlavor}></input>
       <ReactToPrint
         trigger={() => <button>Print</button>}
         content={() => componentRef.current}
+        pageStyle={`@page { size: ${flavor.dimensions.width}mm ${flavor.dimensions.height}mm }`}
       />
-      <button onClick={handleDecreaseSize}>-</button>
-      <button onClick={handleIncreaseSize}>+</button>
+      <button onClick={handleDecreaseFontSize}>Font Size -</button>
+      <button onClick={handleIncreaseFontSize}>Font Size +</button>
+      <button onClick={handleDecreasePageSize}>Page Size -</button>
+      <button onClick={handleIncreasePageSize}>Page Size +</button>
       <button onClick={handleRotate}>Vertical</button>
-
       <PrintComponent flavor={flavor} ref={componentRef} />
     </div>
   );
