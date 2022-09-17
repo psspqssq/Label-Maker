@@ -9,9 +9,9 @@
     page-break-before: always;
   }
 }
-.rotated {
+.rotate {
   transform: rotate(90deg);
   -webkit-transform: rotate(-90deg);
   display: inline-block;
-  padding: 20px;
+  padding: 18px;
 }

@@ -6,11 +6,16 @@ export const PrintComponent = React.forwardRef((props, ref) => {
     "overflow-x": "scroll",
     overflow: "hidden",
     "font-size": props.flavor.fontSize,
+    "min-width": "25px",
+    "background-color": "yellow",
+    width: "auto",
   };
   function getMarkup() {
     return { __html: props.flavor.rawtext };
   }
   return (
-    <div ref={ref} style={style} dangerouslySetInnerHTML={getMarkup()}></div>
+    <div ref={ref} style={style}>
+      {props.flavor.jsx(props.flavor.rawtext, props.flavor.rotate)}
+    </div>
   );
 });

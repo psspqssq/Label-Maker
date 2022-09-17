@@ -11,23 +11,27 @@ const App = () => {
       height: 50.8,
     },
     fontSize: 84,
-    rotate: false,
+    rotate: "norotate",
+    jsx: (markup, rotate) => {
+      return (
+        <div>
+          {markup.split("").map((letter) => (
+            <span className={rotate}>{letter}</span>
+          ))}
+        </div>
+      );
+    },
   };
   const [flavor, setFlavor] = useState(mockupLabel);
   const componentRef = useRef();
+
   function handleFlavor(event) {
-    var markup = "";
-    {
-      event.target.value.split("").map((letter) => {
-        markup += "<span>" + letter + "</span>";
-      });
-    }
     setFlavor({
       ...flavor,
-      rawtext: markup,
+      rawtext: event.target.value,
       dimensions: {
         height: flavor.dimensions.height,
-        width: event.target.value.length * 12,
+        width: event.target.value.length * 12.5,
       },
     });
   }
@@ -62,21 +66,18 @@ const App = () => {
     });
   }
   function handleRotate() {
-    if (flavor.rotate == 0) {
+    if (flavor.rotate == "norotate") {
       setFlavor({
         ...flavor,
-        rotate: 90,
+        rotate: "rotate",
       });
     } else {
       setFlavor({
         ...flavor,
-        rotate: 0,
+        rotate: "norotate",
       });
     }
   }
-  useEffect(() => {
-    setFlavor(mockupLabel);
-  }, []);
   return (
     <div className="App">
       <h1>Label Maker for GH Processing</h1>
