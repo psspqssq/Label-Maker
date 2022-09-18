@@ -7,7 +7,7 @@ const App = () => {
   const mockupLabel = {
     rawtext: "",
     dimensions: {
-      width: 400,
+      width: 0,
       height: 50.8,
     },
     fontSize: 84,
@@ -26,12 +26,23 @@ const App = () => {
   const componentRef = useRef();
 
   function handleFlavor(event) {
+    const adjustedWidth = () => {
+      let adjustedWidth = 0;
+      Array.from(componentRef.current.children[0].children).map((element) => {
+        if (element.innerText != " ") {
+          adjustedWidth = Number(adjustedWidth) + Number(element.offsetWidth);
+        } else if (element.innerText == " ") {
+          adjustedWidth = Number(adjustedWidth) + 23;
+        }
+      });
+      return adjustedWidth + 80;
+    };
     setFlavor({
       ...flavor,
       rawtext: event.target.value,
       dimensions: {
         height: flavor.dimensions.height,
-        width: event.target.value.length * 12.5,
+        width: adjustedWidth(),
       },
     });
   }
@@ -90,7 +101,7 @@ const App = () => {
       <ReactToPrint
         trigger={() => <button>Print</button>}
         content={() => componentRef.current}
-        pageStyle={`@page { size: ${flavor.dimensions.width}mm ${flavor.dimensions.height}mm }`}
+        pageStyle={`@page { size: ${flavor.dimensions.width}px ${flavor.dimensions.height}mm }`}
       />
       <button onClick={handleDecreaseFontSize}>Font Size -</button>
       <button onClick={handleIncreaseFontSize}>Font Size +</button>
